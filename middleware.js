@@ -1,0 +1,17 @@
+const express = require('express');
+const app = express();
+app.use(express.json()); //Middleware to convert request body to JSON
+
+app.post('/data',middleware, sendData);
+
+function sendData(req, res) {
+    const data = req.body;
+    res.json({ message: 'Data received', data: data });
+}
+
+function middleware(req, res, next) {
+    console.log('Middleware executed');
+    next();
+}
+
+app.listen(8000);

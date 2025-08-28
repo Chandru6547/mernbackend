@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 const app = express();
 
 app.use(express.json());
@@ -16,7 +17,33 @@ const studentSchema = new mongoose.Schema({
 
 const Student = mongoose.model("Student", studentSchema);
 
-app.post('/insert', async (req, res) => {
+app.post('/insert', verifytoken, insertdata);
+
+app.post('/login', (req, res) => {
+    let {username, password} = req.body;
+    if(username == "admin" && password == "admin@123") {
+        let token = jwt.sign({username}, "SECRETKEY", {
+            expiresIn : '1h'
+        });
+        res.send(token);
+    }
+});
+
+
+function verifytoken(req, res, next) {
+    let token = req.body.token;
+        if(!token) return res.send("No token provided");
+        jwt.verify(token, "SECRETKEY", (err, decoded) => {
+            if(err) {
+                console.log(err);
+                return res.send("Invalid token");
+            }
+            console.log(decoded);
+            next();
+        });
+}
+
+async function insertdata(req, res) {
     const { name, age, department, rollNo } = req.body;
     const newStudent = new Student({ name, age, department, rollNo });
     try {
@@ -24,8 +51,8 @@ app.post('/insert', async (req, res) => {
         res.status(201).send("Student inserted");
     } catch (error) {
         res.status(400).send("Error inserting student");
-    }
-});
+    } 
+}
 
 app.get('/getAllStudents', async (req, res) => {
     try {
