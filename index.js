@@ -116,12 +116,14 @@ async function updateStudent(req, res) {
 }
 
 app.post('/login', login);
-app.post('/insert', insertStudent);
+app.post('/insert', verifyToken, insertStudent);
 app.get('/getAllStudents',verifyToken,  getAllStudents);
 app.get('/getStudentByRollNo', verifyToken, getStudentByRollNo);
 app.get('/getStudentbyParams/:rollNo', verifyToken, getStudentByParams);
 app.get('/getStudentbyQuery', verifyToken, getStudentByQuery);
 app.delete('/deleteStudentByRollNO', verifyToken, deleteStudentByRollNo);
 app.put('/updateStudent', verifyToken, updateStudent);
+
+///fkjhfdskjhfsdkjfhksjdf
 
 app.listen(3000, () => console.log("Server running on port 3000"));
