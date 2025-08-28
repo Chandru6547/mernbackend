@@ -124,6 +124,11 @@ app.get('/getStudentbyQuery', verifyToken, getStudentByQuery);
 app.delete('/deleteStudentByRollNO', verifyToken, deleteStudentByRollNo);
 app.put('/updateStudent', verifyToken, updateStudent);
 
+const a = 5;
+
+const b = 10;   
+
+
 ///fkjhfdskjhfsdkjfhksjdf
 
 app.listen(3000, () => console.log("Server running on port 3000"));
