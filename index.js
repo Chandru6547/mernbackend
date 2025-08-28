@@ -2,12 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const app = express();
+const db = require('./db');
 
 app.use(express.json());
 
-mongoose.connect("mongodb://127.0.0.1:27017/studentmanagementdata")
-    .then(() => console.log("MongoDB connected"))
-    .catch(err => console.log("DB Connection Error:", err));
+db();
 
 const studentSchema = new mongoose.Schema({
     name: String,
@@ -117,7 +116,7 @@ async function updateStudent(req, res) {
 }
 
 app.post('/login', login);
-app.post('/insert', verifyToken, insertStudent);
+app.post('/insert', insertStudent);
 app.get('/getAllStudents',verifyToken,  getAllStudents);
 app.get('/getStudentByRollNo', verifyToken, getStudentByRollNo);
 app.get('/getStudentbyParams/:rollNo', verifyToken, getStudentByParams);
